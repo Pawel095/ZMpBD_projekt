@@ -11,6 +11,8 @@ RUN poetry install --no-dev
 FROM openjdk:8-slim
 COPY --from=py3 / /
 
+RUN apt-get update && apt-get install -y wait-for-it
+
 WORKDIR /app
 COPY . /app
 RUN chmod +x ./entrypoint.sh

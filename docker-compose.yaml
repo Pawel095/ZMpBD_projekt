@@ -1,27 +1,39 @@
 version: "3.8"
 
 services:
-  # backend:
-  #   build: 
-  #     context: ./backend
-  #   command: startApi
-  #   ports:
-  #     - 8000:8000
-  #   environment:
-  #     - KAFKA_URL=kafka:9092
-  #   volumes:
-  #     - type: bind
-  #       source: ./backend
-  #       target: /app
+  backend:
+    build:
+      context: ./backend
+    command: startApi
+    ports:
+      - 8000:8000
+    environment:
+      - KAFKA_SERVER_IP=kafka
+      - KAFKA_SERVER_PORT=9092
+      - KAFKA_INPUT_TOPIC=input_topic
+      - KAFKA_OUTPUT_TOPIC=out_topic
+      - REDIS_SERVER_IP=redis
+      - REDIS_SERVER_PORT=6379
+      - REDIS_SERVER_DB=0
+    depends_on:
+      - kafka
+      - redis
 
-  # model_matcher:
-  #   build: 
-  #     context: ./model_matcher
-  #   command: startModel
-  #   volumes:
-  #     - type: bind
-  #       source: ./model_matcher
-  #       target: /app
+  model_matcher:
+    build:
+      context: ./model_matcher
+    command: startModel
+    environment:
+      - KAFKA_SERVER_IP=kafka
+      - KAFKA_SERVER_PORT=9092
+      - KAFKA_INPUT_TOPIC=input_topic
+      - KAFKA_OUTPUT_TOPIC=out_topic
+      - REDIS_SERVER_IP=redis
+      - REDIS_SERVER_PORT=6379
+      - REDIS_SERVER_DB=0
+    depends_on:
+      - kafka
+      - redis
 
   zookeeper:
     image: 'bitnami/zookeeper:latest'
@@ -36,7 +48,7 @@ services:
     environment:
       - KAFKA_BROKER_ID=1
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:

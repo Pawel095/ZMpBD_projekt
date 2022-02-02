@@ -88,7 +88,7 @@ async def add_task_to_kafka(water: Water, bg: BackgroundTasks):
 @app.get("/results/{job_id}")
 async def add_task_to_kafka(job_id:str):
     if await r.exists(job_id):
-        return r.get(job_id)
+        return await r.get(job_id)
     else:
         raise HTTPException(status_code=404,detail="Not exists")
 

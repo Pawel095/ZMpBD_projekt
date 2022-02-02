@@ -61,7 +61,7 @@ def start():
         )
         .getOrCreate()
     )
-    spark.sparkContext.setLogLevel("ERROR")
+    # spark.sparkContext.setLogLevel("ERROR")
     print("Python started")
 
     fit_pipe = PipelineModel.load("./model")
