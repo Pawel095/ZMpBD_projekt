@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "src"
+version = "0.1.0"
+description = ""
+authors = ["Paweł Pankiewicz <239565@edu.p.lodz.pl>"]
+
+[tool.poetry.scripts]
+buildModel = "src.make_model:build_model"
+startModel = "src.main:start"
+predownloadJars="src.predownload_jars:predownload"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyspark = "^3.2.0"
+platformdirs = "^2.4.1"
+python-decouple = "^3.5"
+aiokafka = "^0.7.2"
+numpy = "^1.22.1"
+
+[tool.poetry.dev-dependencies]
+black = "^21.12b0"
+isort = "^5.10.1"
+ipykernel = "^6.6.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
