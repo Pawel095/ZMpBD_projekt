@@ -20,4 +20,4 @@ RUN poetry install --no-dev
 RUN predownloadJars
 RUN buildModel
 
-COPY . /app
+ENTRYPOINT [ "/app/entrypoint.sh" ]

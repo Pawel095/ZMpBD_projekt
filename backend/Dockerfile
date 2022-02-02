@@ -13,4 +13,4 @@ COPY . /app
 RUN chmod +x ./entrypoint.sh
 RUN poetry install --no-dev
 
-COPY . /app
+ENTRYPOINT [ "/app/entrypoint.sh" ]
