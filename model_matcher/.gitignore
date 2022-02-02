@@ -3,7 +3,6 @@ data/*
 filtered/*
 model/*
 checkpoint/*
-water_potability.csv
 
 # File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
 
