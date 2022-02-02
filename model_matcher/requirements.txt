@@ -1,0 +1,7 @@
+aiokafka==0.7.2
+kafka-python==2.0.2
+numpy==1.22.1; python_version >= "3.8"
+platformdirs==2.4.1; python_version >= "3.7"
+py4j==0.10.9.3; python_version >= "3.6"
+pyspark==3.2.1; python_version >= "3.6"
+python-decouple==3.5

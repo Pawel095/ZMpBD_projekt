@@ -94,3 +94,6 @@ async def add_task_to_kafka(job_id:str):
 
 def run():
     uvicorn.run("src.api:app", host="0.0.0.0", port=8000, reload=True)
+
+if __name__ == "__main__":
+    run()

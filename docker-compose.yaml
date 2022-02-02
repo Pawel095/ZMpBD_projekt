@@ -18,7 +18,10 @@ services:
     depends_on:
       - kafka
       - redis
-
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /app
   model_matcher:
     build:
       context: ./model_matcher

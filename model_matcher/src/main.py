@@ -104,3 +104,7 @@ def start():
     )
     out.awaitTermination()
     console.awaitTermination()
+
+
+if __name__ == "__main__":
+    start()
