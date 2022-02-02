@@ -20,8 +20,8 @@ services:
       - redis
     volumes:
       - type: bind
-        source: ./backend
-        target: /app
+        source: ./backend/static
+        target: /app/static
   model_matcher:
     build:
       context: ./model_matcher

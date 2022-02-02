@@ -7,7 +7,9 @@ from src.data import Water
 import uvicorn
 from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from decouple import config
-from fastapi import FastAPI, WebSocket, BackgroundTasks,HTTPException
+from fastapi import FastAPI, WebSocket, BackgroundTasks, HTTPException
+from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 r = aioredis.from_url(
     "redis://{ip}:{port}/{db}".format(
@@ -37,6 +39,8 @@ async def unpickle_msg(data: bytes) -> dict:
 
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 async def redis_task(water: Water):
     await producer.send_and_wait(KAFKA_INPUT_TOPIC, await pickle_msg(water.dict()))
@@ -51,7 +55,7 @@ async def redis_task(water: Water):
                 print(f"job {water.job_id} finished")
                 raise StopIteration
     except StopIteration:
-        await r.set(water.job_id,msg.value,ex=60)
+        await r.set(water.job_id, msg.value, ex=60)
     finally:
         await consumer.stop()
 
@@ -85,15 +89,23 @@ async def add_task_to_kafka(water: Water, bg: BackgroundTasks):
     bg.add_task(redis_task, water)
     return water.job_id
 
+
 @app.get("/results/{job_id}")
-async def add_task_to_kafka(job_id:str):
+async def add_task_to_kafka(job_id: str):
     if await r.exists(job_id):
         return await r.get(job_id)
     else:
-        raise HTTPException(status_code=404,detail="Not exists")
+        raise HTTPException(status_code=404, detail="Not exists")
+
+
+@app.get("/", response_class=RedirectResponse)
+async def redrect_to_index():
+    return "/static/index.html"
+
 
 def run():
     uvicorn.run("src.api:app", host="0.0.0.0", port=8000, reload=True)
+
 
 if __name__ == "__main__":
     run()
