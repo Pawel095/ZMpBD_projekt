@@ -60,6 +60,9 @@
                     <button class="w-100 btn btn-primary btn-lg" type="submit">Classify your water!</button>
                     <br /><br>
                 </form>
+                <button class="w-100 btn btn-secondary btn-lg" type="button" onclick="generateRandom()">Randomly
+                    generate data</button>
+                <br /><br>
             </div>
             <div class="col">
                 <div class="alert alert-success" role="alert" id='good' hidden>
@@ -73,6 +76,26 @@
         </div>
     </div>
     <script>
+
+        function randomFromRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function generateRandom() {
+            console.log("random");
+            document.getElementById('bad').hidden = true;
+            document.getElementById('good').hidden = true;
+            document.getElementById('pH').value = randomFromRange(0.2274990502021987, 13.999999999999998);
+            document.getElementById('hardness').value = randomFromRange(73.4922336890611, 317.33812405558257);
+            document.getElementById('solids').value = randomFromRange(320.942611274359, 56488.67241273919);
+            document.getElementById('chloramines').value = randomFromRange(1.3908709048851806, 13.127000000000002);
+            document.getElementById('sulfate').value = randomFromRange(129.00000000000003, 481.0306423059972);
+            document.getElementById('conductivity').value = randomFromRange(201.6197367551575, 753.3426195583046);
+            document.getElementById('organic_carbon').value = randomFromRange(2.1999999999999886, 27.00670661116601);
+            document.getElementById('trihalomethanes').value = randomFromRange(8.577012932983806, 124.0);
+            document.getElementById('turbidity').value = randomFromRange(1.45, 6.494748555990993);
+        }
+
         var waterForm = document.getElementById('waterForm');
         waterForm.onsubmit = async (e) => {
             e.preventDefault();
@@ -99,7 +122,7 @@
             })
 
             let text = await response.text();
-            if(response.status != 200) {
+            if (response.status != 200) {
                 return;
             }
             console.log(text);
